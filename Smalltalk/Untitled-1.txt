@@ -1,0 +1,15 @@
+checkIfWielokat: obiekt
+    ^(obiekt isKindOf: Wielokat)
+ !!  
+
+
+
+
+ !Kwadrat methodsFor: 'arithmetic'!
+
++ figura
+    | p |
+    (figura checkIfWielokat)
+        ifTrue: [p := self pole + figura pole]
+        ifFalse: [p := self pole + figura].
+    ^(Kwadrat new) initialize: p sqrt!!

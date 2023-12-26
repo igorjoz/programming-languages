@@ -1,0 +1,46 @@
+"Szesciokat"
+Wielokat subclass: #Szesciokat
+    instanceVariableNames: ''
+    classVariableNames: ''
+    poolDictionaries: ''
+    category: 'JezykiProgramowania'!
+
+!Szesciokat methodsFor: 'arithmetic'!
+
++ figura
+    | p a |
+    p := self pole + figura pole.
+    a := (6.0 * p / (3.0 sqrt)).
+    ^(Szesciokat new) initialize: a!
+
+!Szesciokat methodsFor: 'scaling'!
+
+skaluj: skala
+    1 to: wierzcholki size do: [:i |
+        wierzcholki at: i put: ((wierzcholki at: i) * skala).
+    ].
+    dlugoscBoku := dlugoscBoku * skala. !!
+
+!Szesciokat methodsFor: 'actions'!
+
+pole
+    ^self dlugoscBoku squared * (3 sqrt / 2)!
+
+drukuj
+    ^Transcript
+        show: 'Szesciokat'; cr;
+        show: 'p1: '; show: (wierzcholki at: 1) printString; cr;
+        show: 'p2: '; show: (wierzcholki at: 2) printString; cr;
+        show: 'p3: '; show: (wierzcholki at: 3) printString; cr;
+        show: 'p4: '; show: (wierzcholki at: 4) printString; cr;
+        show: 'p5: '; show: (wierzcholki at: 5) printString; cr;
+        show: 'p6: '; show: (wierzcholki at: 6) printString; cr;
+        show: 'Długosc boku szesciokata: '; show: (self dlugoscBoku) printString ; cr;
+        show: 'Pole szesciokata: '; show: (self pole) printString; show: ' jednostek^2'; cr; cr.!!
+
+!Szesciokat methodsFor: 'initialize-release'!
+
+initialize: bok
+    super initialize: 6 name: 'Szesciokat'.
+    "Initialization of vertices omitted for brevity"
+    dlugoscBoku := bok!!

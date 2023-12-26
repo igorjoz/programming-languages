@@ -1,0 +1,172 @@
+"1. Jakub Sławiński	193271 mod 5 = 1 → zadanie 1 → trójkąt równoboczny (bok)"
+"2. Igor Józefowicz	193257 mod 2 = 1 → nieparzyste → komunikat „skaluj: liczba”"
+"Środowisko uruchomieniowe: JDoodle https://www.jdoodle.com/execute-smalltalk-online/"
+
+
+"Wielokąt"
+Object subclass: #Wielokat
+	instanceVariableNames: 'wierzcholki nazwa dlugoscBoku'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'JezykiProgramowania'!
+
+!Wielokat methodsFor: 'initialize-release'!
+
+initialize: liczbaWierzcholkow name: nowaNazwa
+	nazwa := nowaNazwa.
+	wierzcholki := Array new: liczbaWierzcholkow.
+	wierzcholki at: 1 put: 0@0.
+	dlugoscBoku := liczbaWierzcholkow. !!
+
+!Wielokat methodsFor: 'accessing' !
+
+nazwa
+	^nazwa!
+
+wierzcholki	
+	^wierzcholki!
+	
+dlugoscBoku
+	^dlugoscBoku!
+
+nazwa: nowa_nazwa
+	nazwa := nowa_nazwa !!
+
+
+"Kwadrat"
+Wielokat subclass: #Kwadrat
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'JezykiProgramowania' !
+
+! Kwadrat methodsFor: 'arithmetic' !
+
++ figura
+	| p |
+	p := self pole + figura pole.
+	^(Kwadrat new) initialize: p sqrt !
+
+!Kwadrat methodsFor: 'scaling'!
+
+skaluj: skala
+	1 to: wierzcholki size do: [:i |
+		wierzcholki at: i put: ((wierzcholki at: i) * skala).
+	].
+	dlugoscBoku := dlugoscBoku * skala. !!
+
+!Kwadrat methodsFor: 'actions'!
+
+pole
+	^((wierzcholki at: 2) x - (wierzcholki at: 1) x) squared !
+	
+drukuj
+    ^Transcript
+        show: 'Kwadrat'; cr;
+        show: 'p1: '; show: (wierzcholki at: 1) printString; cr;
+        show: 'p2: '; show: (wierzcholki at: 2) printString; cr;
+        show: 'p3: '; show: (wierzcholki at: 3) printString; cr;
+        show: 'p4: '; show: (wierzcholki at: 4) printString; cr;
+		show: 'Długosc boku kwadratu: '; show: (self dlugoscBoku) printString ; cr;
+        show: 'Pole kwadratu: '; show: (self pole) printString; show: ' jednostek^2'; cr; cr.!!
+
+!Kwadrat methodsFor: 'initialize-release'!
+
+initialize: bok
+	super initialize: 4 name: 'Kwadrat'.
+	wierzcholki at: 2 put: bok@0.
+	wierzcholki at: 3 put: bok@bok.
+	wierzcholki at: 4 put: 0@bok.
+	dlugoscBoku := bok!!
+
+
+"Trójkąt równoboczny"
+Wielokat subclass: #TrojkatRownoboczny
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'JezykiProgramowania'!
+
+!TrojkatRownoboczny methodsFor: 'arithmetic'!
+
++ figura
+	| p a |
+	p := self pole + figura pole.
+	a := (2.0e0 * p / (3.0e0 sqrt)).
+	^(TrojkatRownoboczny new) initialize: a!
+
+!TrojkatRownoboczny methodsFor: 'scaling'!
+
+skaluj: skala
+	1 to: wierzcholki size do: [:i |
+		wierzcholki at: i put: ((wierzcholki at: i) * skala).
+	].
+	dlugoscBoku := dlugoscBoku * skala. !!
+
+!TrojkatRownoboczny methodsFor: 'actions'!
+
+pole
+	^self dlugoscBoku squared * (3 sqrt / 4)!
+
+drukuj
+	^Transcript
+		show: 'Trójkąt'; cr;
+		show: 'p1: '; show: (wierzcholki at: 1) printString; cr;
+		show: 'p2: '; show: (wierzcholki at: 2) printString; cr;
+		show: 'p3: '; show: (wierzcholki at: 3) printString; cr;
+		show: 'Długość boku trójkąta: '; show: (self dlugoscBoku) printString; cr;
+		show: 'Pole trójkąta: '; show: (self pole) printString; show: ' jednostek^2'; cr; cr.!
+
+!TrojkatRownoboczny methodsFor: 'initialize-release'!
+
+initialize: bok
+	| h |
+	super initialize: 3 name: 'TrojkatRownoboczny'.
+	h := bok * (3 sqrt / 2).
+	wierzcholki at: 2 put: bok@0.
+	wierzcholki at: 3 put: (bok / 2)@(h).
+	dlugoscBoku := bok.!!
+
+
+"Testy"
+Transcript show: 'TESTY'; cr; cr.
+
+k1 := (Kwadrat new) initialize: 2.
+k1 drukuj.
+
+t1 := (TrojkatRownoboczny new) initialize: 4.
+t1 drukuj.
+
+"Skalowanie - zmniejszenie kwadratu o połowę"
+k2 := (Kwadrat new) initialize: 2.
+k2 skaluj: 0.5.
+k2 drukuj.
+
+"Skalowanie - potrojenie rozmiaru trójkąta"
+t2 := (TrojkatRownoboczny new) initialize: 4.
+t2 skaluj: 3.
+t2 drukuj.
+
+" Dodawanie - trójkąt + trójkąt "
+Transcript show: 't+t'; cr.
+t3 := t1 + t1.
+t3 drukuj.
+
+" Dodawanie - kwadrat + kwadrat "
+Transcript show: 'k+k'; cr.
+k3 := k1 + k1.
+k3 drukuj.
+
+" Dodawanie - trójkąt + kwadrat "
+Transcript show: 't+k'; cr.
+t2 drukuj.
+k2 drukuj.
+t4 := t2 + k2.
+t4 drukuj.
+
+" Dodawanie - kwadrat + trójkąt"
+Transcript show: 'k+t'; cr.
+k2 drukuj.
+t2 drukuj.
+k4 := k2 + t2.
+k4 drukuj.
